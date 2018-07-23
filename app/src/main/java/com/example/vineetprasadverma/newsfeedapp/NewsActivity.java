@@ -1,6 +1,9 @@
 package com.example.vineetprasadverma.newsfeedapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -63,8 +66,26 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         // so the list can be populated in the user interface
         newsListView.setAdapter(mNewsAdapter);
 
-        getLoaderManager().initLoader(NEWS_LOADER_ID, null, this).forceLoad();
+        // Get a reference to the ConnectivityManager to check state of network connectivity
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        // Get details on the currently active default data network
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+
+        // If there is a network connection, fetch data
+        if (activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting()) {
+            getLoaderManager().initLoader(NEWS_LOADER_ID, null, this).forceLoad();
+        }else{
+            // Otherwise, display error
+            // First, hide loading indicator so error message will be visible
+            ProgressBar loadingSpinner = findViewById(R.id.loading_spinner);
+            loadingSpinner.setVisibility(View.GONE);
+
+            // Update empty state with no connection error message
+            mEmptyStateTextView.setText(R.string.no_internet_connection);
+        }
         newsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
