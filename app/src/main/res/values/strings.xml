@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">NewsFeedApp</string>
+    <string name="title">Breaking News : Vineet become a youngest Billionaire</string>
+    <string name="author">Vineet Verma</string>
+    <string name="section_name">Business</string>
+    <string name="publication_date">12-12-2030T08:00:02Z</string>
 </resources>
