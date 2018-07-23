@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int NEWS_LOADER_ID = 1;
 
     /**
+     * TextView that is displayed when the list is empty
+     */
+    private TextView mEmptyStateTextView;
+
+    /**
      * Adapter for the list of News.
      */
     private NewsAdapter mNewsAdapter;
@@ -45,6 +52,9 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
         // Find a reference to the {@link ListView} in the layout
         ListView newsListView = findViewById(R.id.list);
+
+        mEmptyStateTextView = findViewById(R.id.empty_text_view);
+        newsListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new {@link ArrayAdapter news.
         mNewsAdapter= new NewsAdapter(this, new ArrayList<News>());
@@ -79,6 +89,10 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     @Override
     public void onLoadFinished(@NonNull Loader<List<News>> loader, List<News> data) {
         Log.i(LOG_TAG,"IN ON LOAD FINISHED");
+        mEmptyStateTextView.setText(R.string.no_news_found);
+
+        ProgressBar loadingSpinner = findViewById(R.id.loading_spinner);
+        loadingSpinner.setVisibility(View.GONE);
 
         // Clear the adapter of previous news data
         mNewsAdapter.clear();

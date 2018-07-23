@@ -4,4 +4,5 @@
     <string name="author">Vineet Verma</string>
     <string name="section_name">Business</string>
     <string name="publication_date">12-12-2030T08:00:02Z</string>
+    <string name="no_news_found">No News Found !!</string>
 </resources>

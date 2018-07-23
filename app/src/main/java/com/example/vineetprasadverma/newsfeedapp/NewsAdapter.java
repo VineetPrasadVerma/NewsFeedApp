@@ -9,17 +9,33 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class NewsAdapter extends ArrayAdapter<News> {
 
     /**
-     * @param context is the current context i.e. the activity in which adapter is beimg created.
-     * @param newsList   is the news which is to be displayed.
+     * @param context  is the current context i.e. the activity in which adapter is beimg created.
+     * @param newsList is the news which is to be displayed.
      */
     public NewsAdapter(Context context, List<News> newsList) {
         super(context, 0, newsList);
+    }
+
+    private String formatDate(String unformattedDate){
+        SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("LLL dd,yy h:mm a");
+        String formattedDate = null;
+        try {
+            formattedDate = outputFormat.format(inputFormat.parse(unformattedDate));
+        } catch (ParseException e) {
+            System.out.println("Input date is not in format yyyy-MM-dd'T'HH:mm:ss'Z'");
+        }
+        return formattedDate;
     }
 
     @NonNull
@@ -27,8 +43,8 @@ public class NewsAdapter extends ArrayAdapter<News> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
         //Check if the existing view is being reused otherwise inflate the view.
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_list_items , parent,false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_list_items, parent, false);
         }
         //Get the object located at the position.
         News currentNews = getItem(position);
@@ -45,7 +61,8 @@ public class NewsAdapter extends ArrayAdapter<News> {
         sectionNameTextView.setText(currentNews.getSectionName());
 
         TextView publicationDateTextView = convertView.findViewById(R.id.publication_date);
-        publicationDateTextView.setText(currentNews.getPublishedDate());
+        String formattedDate = formatDate(currentNews.getPublishedDate());
+        publicationDateTextView.setText(formattedDate);
 
         return convertView;
     }
