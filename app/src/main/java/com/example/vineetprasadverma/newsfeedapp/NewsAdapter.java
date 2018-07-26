@@ -26,9 +26,13 @@ public class NewsAdapter extends ArrayAdapter<News> {
         super(context, 0, newsList);
     }
 
-    private String formatDate(String unformattedDate){
+    /**
+     * @param unformattedDate is the unformatted date.
+     * @return formated date will be return.
+     */
+    private String formatDate(String unformattedDate) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("LLL dd,yy h:mm a");
+        SimpleDateFormat outputFormat = new SimpleDateFormat(" dd/MM h:mm a");
         String formattedDate = null;
         try {
             formattedDate = outputFormat.format(inputFormat.parse(unformattedDate));

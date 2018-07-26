@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_margin="@dimen/eight_dp"
         android:background="@android:color/white"
-        android:divider="@color/list_view_background_color"
+        android:divider="@android:color/white"
         android:dividerHeight="@dimen/four_dp"
         android:orientation="vertical" />
 
