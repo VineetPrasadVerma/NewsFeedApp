@@ -155,8 +155,11 @@ public class QueryUtils {
                 JSONObject currentNews = resultsArray.getJSONObject(i);
                 String newsTitle = currentNews.getString("webTitle");
                 JSONArray tagsArray = currentNews.getJSONArray("tags");
-                JSONObject obj = tagsArray.getJSONObject(0);
-                String authorName = obj.getString("webTitle");
+                String authorName = "No Author";
+                if(tagsArray.length() != 0) {
+                    JSONObject obj = tagsArray.getJSONObject(0);
+                    authorName = obj.getString("webTitle");
+                }
                 String sectionName = currentNews.getString("sectionName");
                 String publicationDate = currentNews.getString("webPublicationDate");
                 String url = currentNews.getString("webUrl");
