@@ -7,7 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -67,6 +73,21 @@ public class NewsAdapter extends ArrayAdapter<News> {
         TextView publicationDateTextView = convertView.findViewById(R.id.publication_date);
         String formattedDate = formatDate(currentNews.getPublishedDate());
         publicationDateTextView.setText(formattedDate);
+
+        //sets the background image to the layout.
+        final ImageView img = new ImageView(getContext());
+        final RelativeLayout relativeLayout = convertView.findViewById(R.id.layout_bg_image);
+        Picasso.with(getContext()).load(currentNews.getImageUrl()).into(img, new Callback() {
+            @Override
+            public void onSuccess() {
+                relativeLayout.setBackground(img.getDrawable());
+            }
+
+            @Override
+            public void onError() {
+                relativeLayout.setBackgroundResource(R.drawable.news_icon);
+            }
+        });
 
         return convertView;
     }

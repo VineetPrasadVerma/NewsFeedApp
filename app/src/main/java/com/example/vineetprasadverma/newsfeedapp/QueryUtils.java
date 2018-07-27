@@ -160,13 +160,15 @@ public class QueryUtils {
                     JSONObject obj = tagsArray.getJSONObject(0);
                     authorName = obj.getString("webTitle");
                 }
+                JSONObject fieldsObject = currentNews.getJSONObject("fields");
+                String imageUrl = fieldsObject.getString("thumbnail");
                 String sectionName = currentNews.getString("sectionName");
                 String publicationDate = currentNews.getString("webPublicationDate");
                 String url = currentNews.getString("webUrl");
 
                 // Create a new {@link News} object with the newsTitle, authorName, sectionName, publicationDate,
                 // and url from the JSON response.
-                News news = new News(newsTitle, authorName, sectionName, publicationDate, url);
+                News news = new News(newsTitle, authorName, sectionName, publicationDate, url, imageUrl);
 
                 // Add the new {@link News} to the list of news.
                 newsList.add(news);

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_bg_image"
     android:layout_width="match_parent"
     android:layout_height="@dimen/one_hundred_ninety_six_dp"
-    android:background="#ff7d47"
     android:padding="@dimen/sixteen_dp">
 
     <TextView
@@ -13,6 +13,7 @@
         android:layout_marginTop="@dimen/sixteen_dp"
         android:fontFamily="monospace"
         android:gravity="center"
+        android:textColor="@android:color/white"
         android:textAppearance="@android:style/TextAppearance.Medium"
         android:textStyle="bold"
         tools:text="@string/title" />
