@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class NewsAdapter extends ArrayAdapter<News> {
 
     /**
@@ -48,6 +51,22 @@ public class NewsAdapter extends ArrayAdapter<News> {
         return formattedDate;
     }
 
+    //find the text view in the list item.
+    @BindView(R.id.web_title)
+    TextView webTitleTextView;
+
+    @BindView(R.id.author_name)
+    TextView authorNameTextView;
+
+    @BindView(R.id.section_name)
+    TextView sectionNameTextView;
+
+    @BindView(R.id.publication_date)
+    TextView publicationDateTextView;
+
+    @BindView(R.id.layout_bg_image)
+    RelativeLayout relativeLayout;
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -56,27 +75,21 @@ public class NewsAdapter extends ArrayAdapter<News> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.news_list_items, parent, false);
         }
+        ButterKnife.bind(this, convertView);
+
         //Get the object located at the position.
         News currentNews = getItem(position);
 
-        //find the text view in the list item.
-        TextView webTitleTextView = convertView.findViewById(R.id.web_title);
         //Get the current news title and set in the web title text view.
         webTitleTextView.setText(currentNews.getWebTitle());
-
-        TextView authorNameTextView = convertView.findViewById(R.id.author_name);
         authorNameTextView.setText(currentNews.getAuthorName());
-
-        TextView sectionNameTextView = convertView.findViewById(R.id.section_name);
         sectionNameTextView.setText(currentNews.getSectionName());
 
-        TextView publicationDateTextView = convertView.findViewById(R.id.publication_date);
         String formattedDate = formatDate(currentNews.getPublishedDate());
         publicationDateTextView.setText(formattedDate);
 
         //sets the background image to the layout.
         final ImageView img = new ImageView(getContext());
-        final RelativeLayout relativeLayout = convertView.findViewById(R.id.layout_bg_image);
         Picasso.with(getContext()).load(currentNews.getImageUrl()).into(img, new Callback() {
             @Override
             public void onSuccess() {

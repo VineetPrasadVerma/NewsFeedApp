@@ -21,7 +21,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>>{
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class NewsActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<News>> {
 
     /**
      * URL for news data from the Guardian API.
@@ -39,28 +42,31 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int NEWS_LOADER_ID = 1;
 
     /**
-     * TextView that is displayed when the list is empty
-     */
-    private TextView mEmptyStateTextView;
-
-    /**
      * Adapter for the list of News.
      */
     private NewsAdapter mNewsAdapter;
+
+    // Find a reference to the {@link ListView} in the layout
+    @BindView(R.id.list)
+    ListView newsListView;
+
+    //TextView that is displayed when the list is empty
+    @BindView(R.id.empty_text_view)
+    TextView mEmptyStateTextView;
+
+    @BindView(R.id.loading_spinner)
+    ProgressBar loadingSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_activity);
+        ButterKnife.bind(this);
 
-        // Find a reference to the {@link ListView} in the layout
-        ListView newsListView = findViewById(R.id.list);
-
-        mEmptyStateTextView = findViewById(R.id.empty_text_view);
         newsListView.setEmptyView(mEmptyStateTextView);
 
         // Create a new {@link ArrayAdapter news.
-        mNewsAdapter= new NewsAdapter(this, new ArrayList<News>());
+        mNewsAdapter = new NewsAdapter(this, new ArrayList<News>());
 
         // Set the adapter on the {@link ListView}
         // so the list can be populated in the user interface
@@ -77,10 +83,9 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         if (activeNetwork != null &&
                 activeNetwork.isConnectedOrConnecting()) {
             getLoaderManager().initLoader(NEWS_LOADER_ID, null, this).forceLoad();
-        }else{
+        } else {
             // Otherwise, display error
             // First, hide loading indicator so error message will be visible
-            ProgressBar loadingSpinner = findViewById(R.id.loading_spinner);
             loadingSpinner.setVisibility(View.GONE);
 
             // Update empty state with no connection error message
@@ -109,10 +114,9 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(@NonNull Loader<List<News>> loader, List<News> data) {
-        Log.i(LOG_TAG,"IN ON LOAD FINISHED");
+        Log.i(LOG_TAG, "IN ON LOAD FINISHED");
         mEmptyStateTextView.setText(R.string.no_news_found);
 
-        ProgressBar loadingSpinner = findViewById(R.id.loading_spinner);
         loadingSpinner.setVisibility(View.GONE);
 
         // Clear the adapter of previous news data
