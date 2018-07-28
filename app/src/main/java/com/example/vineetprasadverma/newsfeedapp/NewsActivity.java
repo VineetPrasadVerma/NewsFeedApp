@@ -2,9 +2,12 @@ package com.example.vineetprasadverma.newsfeedapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.app.LoaderManager;
@@ -32,7 +35,7 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
      * URL for news data from the Guardian API.
      */
     private static final String NEWS_REQUEST_URL =
-            "https://content.guardianapis.com/search?order-by=newest&show-fields=thumbnail&show-tags=contributor&q=world&api-key=181d7afa-22f5-4d43-9ac3-0b8ed9f2bf21";
+            "https://content.guardianapis.com/search?";
 
     //Tag for Log Message.
     private static final String LOG_TAG = NewsActivity.class.getName();
@@ -111,7 +114,31 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
     public Loader<List<News>> onCreateLoader(int id, @Nullable Bundle args) {
         // Create a new loader for the given URL
         Log.i(LOG_TAG, "IN ON CREATE LOADER");
-        return new NewsLoader(this, NEWS_REQUEST_URL);
+
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        // getString retrieves a String value from the preferences. The second parameter is the default value for this preference.
+        String countryName = sharedPrefs.getString(
+                getString(R.string.settings_country_key),
+                getString(R.string.settings_country_default));
+
+        // parse breaks apart the URI string that's passed into its parameter
+        Uri baseUri = Uri.parse(NEWS_REQUEST_URL);
+
+        // buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        // Append query parameter and its value.
+        uriBuilder.appendQueryParameter("order-by", "newest");
+        uriBuilder.appendQueryParameter("show-fields", "thumbnail");
+        uriBuilder.appendQueryParameter("show-tags", "contributor");
+        uriBuilder.appendQueryParameter("q", countryName);
+        uriBuilder.appendQueryParameter("api-key", "181d7afa-22f5-4d43-9ac3-0b8ed9f2bf21");
+
+        Log.i(LOG_TAG,uriBuilder.toString());
+
+        // Return the completed uri.
+        return new NewsLoader(this, uriBuilder.toString());
     }
 
     @Override
