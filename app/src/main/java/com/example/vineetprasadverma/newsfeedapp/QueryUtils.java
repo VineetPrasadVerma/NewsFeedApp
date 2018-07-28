@@ -160,8 +160,13 @@ public class QueryUtils {
                     JSONObject obj = tagsArray.getJSONObject(0);
                     authorName = obj.getString("webTitle");
                 }
-                JSONObject fieldsObject = currentNews.getJSONObject("fields");
-                String imageUrl = fieldsObject.getString("thumbnail");
+                String imageUrl;
+                try {
+                    JSONObject fieldsObject = currentNews.getJSONObject("fields");
+                    imageUrl = fieldsObject.getString("thumbnail");
+                }catch (JSONException e){
+                    imageUrl = "https://sl.d.umn.edu/och/PhotoGallery/no-image-available.jpg";
+                }
                 String sectionName = currentNews.getString("sectionName");
                 String publicationDate = currentNews.getString("webPublicationDate");
                 String url = currentNews.getString("webUrl");

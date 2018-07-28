@@ -122,6 +122,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
                 getString(R.string.settings_country_key),
                 getString(R.string.settings_country_default));
 
+        String orderBy  = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default)
+        );
+
         // parse breaks apart the URI string that's passed into its parameter
         Uri baseUri = Uri.parse(NEWS_REQUEST_URL);
 
@@ -129,13 +134,11 @@ public class NewsActivity extends AppCompatActivity implements LoaderManager.Loa
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         // Append query parameter and its value.
-        uriBuilder.appendQueryParameter("order-by", "newest");
+        uriBuilder.appendQueryParameter("order-by", orderBy);
         uriBuilder.appendQueryParameter("show-fields", "thumbnail");
         uriBuilder.appendQueryParameter("show-tags", "contributor");
         uriBuilder.appendQueryParameter("q", countryName);
         uriBuilder.appendQueryParameter("api-key", "181d7afa-22f5-4d43-9ac3-0b8ed9f2bf21");
-
-        Log.i(LOG_TAG,uriBuilder.toString());
 
         // Return the completed uri.
         return new NewsLoader(this, uriBuilder.toString());

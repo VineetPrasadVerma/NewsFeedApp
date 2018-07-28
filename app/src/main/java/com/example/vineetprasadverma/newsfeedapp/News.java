@@ -16,7 +16,7 @@ public class News {
      * @param publishedDate is the date on which news is published.
      * @param sectionName   is the section in which news is published.
      * @param url           is the url to the news.
-     *                      @param imageUrl is the url to the image.
+     * @param imageUrl      is the url to the image.
      */
 
     public News(String webTitle, String authorName, String sectionName, String publishedDate, String url, String imageUrl) {
